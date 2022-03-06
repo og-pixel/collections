@@ -4,16 +4,23 @@ import scala.reflect.ClassTag
 
 object Matrix {
 
+//  def apply[V: ClassTag](elems: V*): MatrixBuilder[V] = {
+//    new MatrixBuilder[V](Vector(elems.toVector))
+//  }
+
   def apply[V: ClassTag](arr: MatrixType[V]): Option[Matrix[V]] = {
     if (checkMatrix(arr)) Some(new Matrix(arr))
     else None
   }
 
+  def apply[V: ClassTag](arr: V*): Option[Matrix[V]] =
+    Matrix(Vector(arr.toVector))
+
   def apply[V: ClassTag](arr: Array[Array[V]]): Option[Matrix[V]] =
     Matrix.apply(arr.map(_.toVector).toVector)
 
-  def apply[V: ClassTag](arr: Seq[Seq[V]]): Option[Matrix[V]] =
-    Matrix.apply(arr.map(_.toVector).toVector)
+//  def apply[V: ClassTag](arr: Seq[Seq[V]]): Option[Matrix[V]] =
+//    Matrix.apply(arr.map(_.toVector).toVector)
 
 
   protected def checkMatrix[V: ClassTag](arr: MatrixType[V]): Boolean = {
@@ -25,19 +32,23 @@ object Matrix {
 
 }
 
-protected class Matrix[V: ClassTag](private[this] val arr: MatrixType[V]) {
+case class Matrix[V: ClassTag](private val arr: MatrixType[V]) {
+
+  def apply(elems: V*): Matrix[V] = {
+    Matrix(arr.appended(elems.toVector)).get
+  }
 
   def get(x: Int, y: Int): Option[V] = {
     Option(arr(y)(x))
   }
 
   def appendRow(elem: V*): Option[Matrix[V]] = {
-    if (elem.length == arr(0).length) Matrix(arr.appended(elem))
+    if (elem.length == arr(0).length) Matrix(arr.appended(elem.toVector))
     else None
   }
 
   def prependRow(elem: V*): Option[Matrix[V]] = {
-    if (elem.length == arr(0).length) Matrix(arr.prepended(elem))
+    if (elem.length == arr(0).length) Matrix(arr.prepended(elem.toVector))
     else None
   }
 

@@ -39,7 +39,7 @@ lazy val projectSettings = Seq(
     "-deprecation",
     "-unchecked"
   ),
-  packMain := Map("hello" -> "com.miloszjakubanis.crypticcommand.Main"),
+  packMain := Map("hello" -> "com.miloszjakubanis.collections.Main"),
   resolvers := {
     Seq(
       "releases" at "https://artifact.miloszjakubanis.com/repository/earth/",
