@@ -66,6 +66,6 @@ lazy val root: Project = project
 //  .dependsOn(commonProject)
   .settings(
     projectSettings,
-    name := "Dungeon",
-    buildInfoPackage := "Dungeon"
+    name := "collections",
+    buildInfoPackage := "collections"
   )
